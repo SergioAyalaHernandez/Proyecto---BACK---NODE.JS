@@ -19,5 +19,14 @@
     "mongoose": "^6.8.0",
     "nodemon": "^2.0.20",
     "validator": "^13.7.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SergioAyalaHernandez/rentCarg1.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SergioAyalaHernandez/rentCarg1/issues"
+  },
+  "homepage": "https://github.com/SergioAyalaHernandez/rentCarg1#readme"
 }

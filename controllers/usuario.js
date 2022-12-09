@@ -17,16 +17,15 @@ var controller ={
     save:function(req,res){
         var params = req.body;
         var validateName = !validator.isEmpty(params.nombre);
-        var validateSurname = !validator.isEmpty(params.surName);
+        var validateSurname = !validator.isEmpty(params.surname);
         var validateEmail = validator.isEmail(params.email)&& !validator.isEmpty(params.email);
         var validatePass = !validator.isEmpty(params.pass);
-        console.log(validateName);
-        console.log(params.nombre);
+    
 
         if(validateName && validateEmail && validatePass && validateSurname){
             var usuario = new Usuario();
-            usuario.name = params.nombre;
-            usuario.surName = params.surname;
+            usuario.nombre = params.nombre;
+            usuario.surname = params.surname;
             usuario.email = params.email;
             usuario.pass = params.pass;
             usuario.image = null;
@@ -63,13 +62,13 @@ var controller ={
         var usuarioId = req.params.id;
         console.log(usuarioId);
         var validateName = !validator.isEmpty(params.nombre);
-        var validateSurname = !validator.isEmpty(params.surName);
+        var validateSurname = !validator.isEmpty(params.surname);
         var validateEmail = validator.isEmail(params.email)&& !validator.isEmpty(params.email);
         var validatePass = !validator.isEmpty(params.pass);
         if(validateName && validateEmail && validatePass && validateSurname){
             var update = {
                 name:params.nombre,
-                surName:params.surname,
+                surname:params.surname,
                 email:params.email,
                 pass:params.pass
             }
