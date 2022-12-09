@@ -17,7 +17,7 @@ var controller ={
     save:function(req,res){
         var params = req.body;
         var validateName = !validator.isEmpty(params.nombre);
-        var validateSurname = !validator.isEmpty(params.surname);
+        var validateSurname = !validator.isEmpty(params.surName);
         var validateEmail = validator.isEmail(params.email)&& !validator.isEmpty(params.email);
         var validatePass = !validator.isEmpty(params.pass);
     
