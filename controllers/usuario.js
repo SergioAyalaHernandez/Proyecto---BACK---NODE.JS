@@ -2,17 +2,6 @@ var validator = require("validator");
 var Usuario = require("../models/Usuarios");
 
 var controller ={
-    probando: function(req,res){
-        return res.status(200).send({
-            message:"Estoy probando"
-        });
-    },
-
-    testeando:function(req,res){
-        return res.status(200).send({
-            message:"Estoy en el metodo testeando"
-        });
-    },
 
     save:function(req,res){
         var params = req.body;
@@ -21,7 +10,6 @@ var controller ={
         var validateEmail = validator.isEmail(params.email)&& !validator.isEmpty(params.email);
         var validatePass = !validator.isEmpty(params.pass);
     
-
         if(validateName && validateEmail && validatePass && validateSurname){
             var usuario = new Usuario();
             usuario.nombre = params.nombre;
@@ -131,7 +119,6 @@ var controller ={
 
     listarUsuarios:function(req,res){
         Usuario.find(function(err,doc){
-            console.log(doc);
             return res.status(200).send({
                 message:"Usuarios",
                 doc

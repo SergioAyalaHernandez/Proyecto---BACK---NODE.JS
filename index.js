@@ -3,6 +3,9 @@ const app = express();
 const mongoose = require("mongoose");
 const user_routes = require("./routes/usuario");
 const gama_routes = require("./routes/Gama");
+const reservation_routes = require("./routes/Reservation");
+const message_routes = require("./routes/Message");
+const car_routes = require("./routes/Car");
 const port = 3000;
 const bodyParser = require("body-parser");
 
@@ -18,7 +21,7 @@ mongoose.connect("mongodb://localhost:27017/grupo11",{
     family:4
 })
 .then(() => {
-    app.use("/api",user_routes);
+    app.use("/api",reservation_routes);
     app.listen(port, () =>{
         console.log("Init in the ", port);
     });

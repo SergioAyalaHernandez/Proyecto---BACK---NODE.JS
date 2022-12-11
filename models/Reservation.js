@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-var GamaSchema = Schema({
+var ReservationSchema = Schema({
     startDate: {type:Date,default: Date.now},
     devolutionDate: {type:Date,default: Date.now},
     status: String

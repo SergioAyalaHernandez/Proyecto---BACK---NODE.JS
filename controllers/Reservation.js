@@ -1,25 +1,27 @@
 var validator = require("validator");
-var Gama = require("../models/Gama");
+const Reservation = require("../models/Reservation");
+var Gama = require("../models/Reservation");
 
 var controller ={
     save:function(req,res){
         var params = req.body;
-        var validateName = !validator.isEmpty(params.name);
-        var validateDescription = !validator.isEmpty(params.description);
+        var validateStartDate = !validator.isEmpty(params.startDate);
+        var validateDevolutionDate = !validator.isEmpty(params.devolutionDate);
         
-        if(validateName && validateDescription){
-            var gama = new Gama();
-            gama.name = params.name;
-            gama.description = params.description;
-            gama.save((err,gamaStored)=>{
-                if(err || !gamaStored){
+        if(validateStartDate && validateDevolutionDate){
+            var reservation = new Reservation();
+            reservation.startDate = params.startDate;
+            reservation.devolutionDate = params.devolutionDate;
+            reservation.status = "Created";
+            reservation.save((err,reservationStored)=>{
+                if(err || !reservationStored){
                     return res.status(404).send({
                         message:"Error al guardar la gama",
                         status: "error"
                     });
                 }
                 return res.status(200).send({
-                    message:"Gama guardado"
+                    message:"Reservación guardado"
                 });
             });
         }else{
@@ -31,34 +33,34 @@ var controller ={
 
     update:function(req,res){
         var params = req.body;
-        var gamaId = req.params.id;
-        console.log(gamaId);
-        var validateName = !validator.isEmpty(params.name);
-        var validateDescription = !validator.isEmpty(params.description);
+        var reservationId = req.params.id;
+        console.log(reservationId);
+        var validateStartDate = !validator.isEmpty(params.startDate);
+        var validateDevolutionDate = !validator.isEmpty(params.devolutionDate);
         
-        if(validateName && validateDescription){
+        if(validateStartDate && validateDevolutionDate){
             var update = {
-                name:params.nombre,
-                description:params.description
+                startDate:params.startDate,
+                devolutionDate:params.devolutionDate
             }
 
-            Gama.findOneAndUpdate({gamaId},update,{new:true},(err,gamaUpdate)=>{
+            Reservation.findOneAndUpdate({reservationId},update,{new:true},(err,reservationUpdate)=>{
                 if(err){
                     return res.status(500).send({
                         message:"faltan parametros",
                         status:"error"
                         });
                 }
-                if(!gamaUpdate){
+                if(!reservationUpdate){
                     return res.status(400).send({
-                        message:"gama no actualizada",
+                        message:"Reservación no actualizada",
                         status:"error"
                         });
                 }
                 return res.status(200).send({
-                    message:"gama actualizada",
+                    message:"Reservación actualizada",
                     status:"success",
-                    gamaUpdate
+                    reservationUpdate
                     });
             });          
             
@@ -73,22 +75,22 @@ var controller ={
 
     eliminar:function(req,res){
         var params = req.body;
-        var gamaId = req.params.id;
-        Gama.findOneAndDelete({_id:gamaId},(err,gamaRemoved)=>{
+        var reservationId = req.params.id;
+        Reservation.findOneAndDelete({_id:reservationId},(err,reservationRemoved)=>{
             if(err){
                 return res.status(500).send({
                     message:"Error en el id",
                     status:"error"
                     });
             }
-            if(!gamaRemoved){
+            if(!reservationRemoved){
                 return res.status(400).send({
-                    message:"Gama no eliminada",
+                    message:"Reservación no eliminada",
                     status:"error"
                     });
             }
             return res.status(200).send({
-                message:"Gama actualizada",
+                message:"Reservación actualizada",
                 status:"success"
             });
         });
@@ -97,10 +99,10 @@ var controller ={
         });
     },
 
-    listarGamas:function(req,res){
-        Gama.find(function(err,doc){
+    listarreservations:function(req,res){
+        Reservation.find(function(err,doc){
             return res.status(200).send({
-                message:"Gamas",
+                message:"reservations",
                 doc
             });        
         });

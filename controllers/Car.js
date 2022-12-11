@@ -1,25 +1,29 @@
 var validator = require("validator");
-var Gama = require("../models/Gama");
+var Car = require("../models/Car");
 
 var controller ={
     save:function(req,res){
         var params = req.body;
         var validateName = !validator.isEmpty(params.name);
+        var validateBrand = !validator.isEmpty(params.brand);
+        var validateYear = !validator.isEmpty(params.year);
         var validateDescription = !validator.isEmpty(params.description);
         
         if(validateName && validateDescription){
-            var gama = new Gama();
-            gama.name = params.name;
-            gama.description = params.description;
-            gama.save((err,gamaStored)=>{
-                if(err || !gamaStored){
+            var car = new Car();
+            car.name = params.name;
+            car.brand = params.brand;
+            car.year = params.year;
+            car.description = params.description;
+            car.save((err,carStored)=>{
+                if(err || !carStored){
                     return res.status(404).send({
-                        message:"Error al guardar la gama",
+                        message:"Error al guardar el carro",
                         status: "error"
                     });
                 }
                 return res.status(200).send({
-                    message:"Gama guardado"
+                    message:"Carro guardado"
                 });
             });
         }else{
@@ -31,34 +35,38 @@ var controller ={
 
     update:function(req,res){
         var params = req.body;
-        var gamaId = req.params.id;
-        console.log(gamaId);
+        var carId = req.params.id;
+        console.log(carId);
         var validateName = !validator.isEmpty(params.name);
+        var validateBrand = !validator.isEmpty(params.brand);
+        var validateYear = !validator.isEmpty(params.year);
         var validateDescription = !validator.isEmpty(params.description);
         
-        if(validateName && validateDescription){
+        if(validateName && validateBrand && validateDescription && validateYear){
             var update = {
                 name:params.nombre,
+                brand:params.brand,
+                year:params.year,
                 description:params.description
             }
 
-            Gama.findOneAndUpdate({gamaId},update,{new:true},(err,gamaUpdate)=>{
+            Car.findOneAndUpdate({carId},update,{new:true},(err,carUpdate)=>{
                 if(err){
                     return res.status(500).send({
                         message:"faltan parametros",
                         status:"error"
                         });
                 }
-                if(!gamaUpdate){
+                if(!carUpdate){
                     return res.status(400).send({
-                        message:"gama no actualizada",
+                        message:"carro no actualizado",
                         status:"error"
                         });
                 }
                 return res.status(200).send({
-                    message:"gama actualizada",
+                    message:"Carro actualizado",
                     status:"success",
-                    gamaUpdate
+                    carUpdate
                     });
             });          
             
@@ -73,34 +81,34 @@ var controller ={
 
     eliminar:function(req,res){
         var params = req.body;
-        var gamaId = req.params.id;
-        Gama.findOneAndDelete({_id:gamaId},(err,gamaRemoved)=>{
+        var carId = req.params.id;
+        Car.findOneAndDelete({_id:carId},(err,carRemoved)=>{
             if(err){
                 return res.status(500).send({
                     message:"Error en el id",
                     status:"error"
                     });
             }
-            if(!gamaRemoved){
+            if(!carRemoved){
                 return res.status(400).send({
-                    message:"Gama no eliminada",
+                    message:"Carro no eliminado",
                     status:"error"
                     });
             }
             return res.status(200).send({
-                message:"Gama actualizada",
+                message:"Carro actualizado",
                 status:"success"
             });
         });
         return res.status(200).send({
-            message:"Eliminada"
+            message:"Eliminado"
         });
     },
 
-    listarGamas:function(req,res){
-        Gama.find(function(err,doc){
+    listarCarros:function(req,res){
+        Car.find(function(err,doc){
             return res.status(200).send({
-                message:"Gamas",
+                message:"Carros",
                 doc
             });        
         });

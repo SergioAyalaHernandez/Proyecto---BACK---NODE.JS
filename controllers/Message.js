@@ -1,25 +1,23 @@
 var validator = require("validator");
-var Gama = require("../models/Gama");
+var Message = require("../models/Message");
 
 var controller ={
     save:function(req,res){
         var params = req.body;
-        var validateName = !validator.isEmpty(params.name);
-        var validateDescription = !validator.isEmpty(params.description);
-        
-        if(validateName && validateDescription){
-            var gama = new Gama();
-            gama.name = params.name;
-            gama.description = params.description;
-            gama.save((err,gamaStored)=>{
-                if(err || !gamaStored){
+        var validateMessageText = !validator.isEmpty(params.messageText);
+
+        if(validateMessageText){
+            var message = new Message();
+            message.messageText = params.messageText;
+            message.save((err,messageStored)=>{
+                if(err || !messageStored){
                     return res.status(404).send({
-                        message:"Error al guardar la gama",
+                        message:"Error al guardar la message",
                         status: "error"
                     });
                 }
                 return res.status(200).send({
-                    message:"Gama guardado"
+                    message:"message guardado"
                 });
             });
         }else{
@@ -31,34 +29,30 @@ var controller ={
 
     update:function(req,res){
         var params = req.body;
-        var gamaId = req.params.id;
-        console.log(gamaId);
-        var validateName = !validator.isEmpty(params.name);
-        var validateDescription = !validator.isEmpty(params.description);
+        var messageId = req.params.id;
+        var validateMessageText = !validator.isEmpty(params.messageText);
         
-        if(validateName && validateDescription){
+        if(validateMessageText){
             var update = {
-                name:params.nombre,
-                description:params.description
+                messageText:params.messageText,
             }
-
-            Gama.findOneAndUpdate({gamaId},update,{new:true},(err,gamaUpdate)=>{
+            Message.findOneAndUpdate({messageId},update,{new:true},(err,messageUpdate)=>{
                 if(err){
                     return res.status(500).send({
                         message:"faltan parametros",
                         status:"error"
                         });
                 }
-                if(!gamaUpdate){
+                if(!messageUpdate){
                     return res.status(400).send({
-                        message:"gama no actualizada",
+                        message:"message no actualizado",
                         status:"error"
                         });
                 }
                 return res.status(200).send({
-                    message:"gama actualizada",
+                    message:"message actualizado",
                     status:"success",
-                    gamaUpdate
+                    messageUpdate
                     });
             });          
             
@@ -66,29 +60,27 @@ var controller ={
             return res.status(404).send({
             message:"faltan parametros"
             });
-
-        }
-        
+        }        
     },
 
     eliminar:function(req,res){
         var params = req.body;
-        var gamaId = req.params.id;
-        Gama.findOneAndDelete({_id:gamaId},(err,gamaRemoved)=>{
+        var messageId = req.params.id;
+        Message.findOneAndDelete({_id:messageId},(err,messageRemoved)=>{
             if(err){
                 return res.status(500).send({
                     message:"Error en el id",
                     status:"error"
                     });
             }
-            if(!gamaRemoved){
+            if(!messageRemoved){
                 return res.status(400).send({
-                    message:"Gama no eliminada",
+                    message:"Mensaje no eliminado",
                     status:"error"
                     });
             }
             return res.status(200).send({
-                message:"Gama actualizada",
+                message:"Mensaje actualizado",
                 status:"success"
             });
         });
@@ -97,10 +89,10 @@ var controller ={
         });
     },
 
-    listarGamas:function(req,res){
-        Gama.find(function(err,doc){
+    listarMensajes:function(req,res){
+        Message.find(function(err,doc){
             return res.status(200).send({
-                message:"Gamas",
+                message:"Mensajes",
                 doc
             });        
         });
