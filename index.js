@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const mongoose = require("mongoose");
 const user_routes = require("./routes/usuario");
 const gama_routes = require("./routes/Gama");
@@ -13,6 +14,7 @@ mongoose.Promise = global.Promise;
 
 
 app.use(bodyParser.urlencoded({extended:false}));
+app.use(cors());
 
 
 mongoose.connect("mongodb://localhost:27017/grupo11",{
@@ -21,7 +23,9 @@ mongoose.connect("mongodb://localhost:27017/grupo11",{
     family:4
 })
 .then(() => {
-    app.use("/api",reservation_routes);
+    app.use("/api/usuario",user_routes);
+    app.use("/api/car",car_routes);
+    app.use("/api/reservation",reservation_routes);
     app.listen(port, () =>{
         console.log("Init in the ", port);
     });
