@@ -6,7 +6,8 @@ var CarSchema = Schema({
     brand: String,
     year: String,
     description: String,
-    payDay:String
+    payDay:String,
+    link:String
 });
 
 module.exports = mongoose.model("Car",CarSchema);

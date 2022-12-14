@@ -16,6 +16,7 @@ var controller ={
             car.year = params.year;
             car.description = params.description;
             car.payDay = params.payDay;
+            car.link = params.link;
             car.save((err,carStored)=>{
                 if(err || !carStored){
                     return res.status(404).send({
@@ -49,7 +50,8 @@ var controller ={
                 brand:params.brand,
                 year:params.year,
                 description:params.description,
-                payDay:params.payDay
+                payDay:params.payDay,
+                link:params.link
             }
 
             Car.findOneAndUpdate({carId},update,{new:true},(err,carUpdate)=>{
