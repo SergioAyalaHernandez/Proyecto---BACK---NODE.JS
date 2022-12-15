@@ -91,31 +91,30 @@ var controller ={
     },
 
     eliminar:function(req,res){
-        var params = req.body;
         var usuarioId = req.params.id;
-        console.log(usuarioId);
         Usuario.findOneAndDelete({_id:usuarioId},(err,userRemoved)=>{
             if(err){
                 return res.status(500).send({
-                    message:"Error en el id",
-                    status:"error"
-                    });
+                    message:"Error en la petición",
+                    status:"Error"
+                });
             }
+
             if(!userRemoved){
-                return res.status(400).send({
-                    message:"usuario no eliminado",
-                    status:"error"
-                    });
+                return res.status(404).send({
+                    message:"-usuario no eliminado",
+                    status:"Error"
+                });
             }
+
             return res.status(200).send({
-                message:"usuario actualizado",
-                status:"success"
+                message:"Eliminado exitosamente",
+                usuario:userRemoved
             });
-        });
-        return res.status(200).send({
-            message:"Eliminado"
-        });
+        })
+        
     },
+
 
     listarUsuarios:function(req,res){
         Usuario.find(function(err,doc){

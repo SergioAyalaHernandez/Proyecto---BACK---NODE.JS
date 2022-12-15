@@ -23,6 +23,7 @@ mongoose.connect("mongodb://localhost:27017/grupo11",{
     family:4
 })
 .then(() => {
+    app.use(express.json())
     app.use("/api/usuario",user_routes);
     app.use("/api/car",car_routes);
     app.use("/api/reservation",reservation_routes);
@@ -31,5 +32,8 @@ mongoose.connect("mongodb://localhost:27017/grupo11",{
     });
 })
 .catch(err => console.log(err));
+
+
+
 
 
