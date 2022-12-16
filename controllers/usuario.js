@@ -49,19 +49,20 @@ var controller ={
         var params = req.body;
         var usuarioId = req.params.id;
         console.log(usuarioId);
+        console.log(params);
         var validateName = !validator.isEmpty(params.nombre);
         var validateSurname = !validator.isEmpty(params.surname);
         var validateEmail = validator.isEmail(params.email)&& !validator.isEmpty(params.email);
         var validatePass = !validator.isEmpty(params.pass);
         if(validateName && validateEmail && validatePass && validateSurname){
             var update = {
-                name:params.nombre,
+                nombre:params.nombre,
                 surname:params.surname,
                 email:params.email,
                 pass:params.pass
             }
-
-            Usuario.findOneAndUpdate({usuarioId},update,{new:true},(err,userUpdate)=>{
+            console.log(update)
+            Usuario.findOneAndUpdate({_id:usuarioId},update,{new:true},(err,userUpdate)=>{
                 if(err){
                     return res.status(500).send({
                         message:"faltan parametros",

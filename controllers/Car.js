@@ -39,6 +39,8 @@ var controller ={
         var params = req.body;
         var carId = req.params.id;
         console.log(carId);
+        console.log(params);
+        console.log("params")
         var validateName = !validator.isEmpty(params.name);
         var validateBrand = !validator.isEmpty(params.brand);
         var validateYear = !validator.isEmpty(params.year);
@@ -46,15 +48,15 @@ var controller ={
         
         if(validateName && validateBrand && validateDescription && validateYear){
             var update = {
-                name:params.nombre,
+                name:params.name,
                 brand:params.brand,
                 year:params.year,
                 description:params.description,
                 payDay:params.payDay,
                 link:params.link
             }
-
-            Car.findOneAndUpdate({carId},update,{new:true},(err,carUpdate)=>{
+            console.log(update)
+            Car.findOneAndUpdate({_id:carId},update,{new:true},(err,carUpdate)=>{
                 if(err){
                     return res.status(500).send({
                         message:"faltan parametros",
@@ -84,30 +86,34 @@ var controller ={
     },
 
     eliminar:function(req,res){
-        var params = req.body;
         var carId = req.params.id;
         Car.findOneAndDelete({_id:carId},(err,carRemoved)=>{
             if(err){
                 return res.status(500).send({
-                    message:"Error en el id",
-                    status:"error"
-                    });
+                    message:"Error en la petición",
+                    status:"Error"
+                });
             }
+
             if(!carRemoved){
-                return res.status(400).send({
-                    message:"Carro no eliminado",
-                    status:"error"
-                    });
+                return res.status(404).send({
+                    message:"-usuario no eliminado",
+                    status:"Error"
+                });
             }
+
             return res.status(200).send({
-                message:"Carro actualizado",
-                status:"success"
+                message:"Eliminado exitosamente",
+                usuario:carRemoved
             });
-        });
-        return res.status(200).send({
-            message:"Eliminado"
-        });
+        })
+        
     },
+
+
+
+
+
 
     listarCarros:function(req,res){
         Car.find(function(err,doc){
@@ -116,6 +122,30 @@ var controller ={
                 doc
             });        
         });
+    },
+    mostrarCar:function(req,res){
+        var params = req.body;
+        var usuarioId = req.params.id;
+        console.log(usuarioId);
+        Car.findById(usuarioId).exec((err,usuario)=>{
+            if(err){
+                return res.status(500).send({
+                    message:"Error en el id",
+                    status:"error"
+                    });
+            }
+            if(!usuario){
+                return res.status(400).send({
+                    message:"usuario no encontrado",
+                    status:"error"
+                    });
+            }
+            return res.status(200).send({
+                message:"Usuario solicitado",
+                usuario
+            });
+        });
+       
     },
 }
 
