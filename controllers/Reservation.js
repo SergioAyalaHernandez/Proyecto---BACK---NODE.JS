@@ -7,21 +7,26 @@ var controller ={
         var params = req.body;
         var validateStartDate = !validator.isEmpty(params.startDate);
         var validateDevolutionDate = !validator.isEmpty(params.devolutionDate);
+        var validateidVehiculo = !validator.isEmpty(params.devolutionDate);
+        var validateidUsuario = !validator.isEmpty(params.devolutionDate);
         
-        if(validateStartDate && validateDevolutionDate){
+        if(validateStartDate && validateDevolutionDate && validateidVehiculo && validateidUsuario){
             var reservation = new Reservation();
             reservation.startDate = params.startDate;
             reservation.devolutionDate = params.devolutionDate;
+            reservation.idVehiculo = params.idVehiculo;
+            reservation.idUsuario = params.idUsuario;
+
             reservation.status = "Created";
             reservation.save((err,reservationStored)=>{
                 if(err || !reservationStored){
                     return res.status(404).send({
-                        message:"Error al guardar la gama",
+                        message:"Error al guardar la reserva",
                         status: "error"
                     });
                 }
                 return res.status(200).send({
-                    message:"Reservación guardado"
+                    message:"Reservación guardada"
                 });
             });
         }else{
@@ -37,11 +42,16 @@ var controller ={
         console.log(reservationId);
         var validateStartDate = !validator.isEmpty(params.startDate);
         var validateDevolutionDate = !validator.isEmpty(params.devolutionDate);
+        var validateidVehiculo = !validator.isEmpty(params.devolutionDate);
+        var validateidUsuario = !validator.isEmpty(params.devolutionDate);
         
-        if(validateStartDate && validateDevolutionDate){
+        if(validateStartDate && validateDevolutionDate && validateidVehiculo && validateidUsuario){
             var update = {
                 startDate:params.startDate,
-                devolutionDate:params.devolutionDate
+                devolutionDate:params.devolutionDate,
+                idUsuario:params.idUsuario,
+                idVehiculo:params.idVehiculo,
+                status:params.status
             }
 
             Reservation.findOneAndUpdate({reservationId},update,{new:true},(err,reservationUpdate)=>{
@@ -74,30 +84,30 @@ var controller ={
     },
 
     eliminar:function(req,res){
-        var params = req.body;
         var reservationId = req.params.id;
         Reservation.findOneAndDelete({_id:reservationId},(err,reservationRemoved)=>{
             if(err){
                 return res.status(500).send({
-                    message:"Error en el id",
-                    status:"error"
-                    });
+                    message:"Error en la petición",
+                    status:"Error"
+                });
             }
+
             if(!reservationRemoved){
-                return res.status(400).send({
-                    message:"Reservación no eliminada",
-                    status:"error"
-                    });
+                return res.status(404).send({
+                    message:"-reserva no eliminada",
+                    status:"Error"
+                });
             }
+
             return res.status(200).send({
-                message:"Reservación actualizada",
-                status:"success"
+                message:"Eliminado exitosamente",
+                usuario:reservationRemoved
             });
-        });
-        return res.status(200).send({
-            message:"Eliminada"
-        });
+        })
+        
     },
+
 
     listarreservations:function(req,res){
         Reservation.find(function(err,doc){
