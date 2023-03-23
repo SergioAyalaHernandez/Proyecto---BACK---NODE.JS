@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
 
 
-mongoose.connect("mongodb://localhost:27017/grupo11",{
+mongoose.connect("mongodb://mongo:XlgUk2Gjj320AoEt5B3n@containers-us-west-196.railway.app:6244",{
     useNewUrlParser:true,
     useUnifiedTopology:true,
     family:4
