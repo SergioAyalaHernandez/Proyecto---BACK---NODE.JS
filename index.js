@@ -17,11 +17,10 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
 
 
-mongoose.connect("mongodb://mongo:XlgUk2Gjj320AoEt5B3n@containers-us-west-196.railway.app:6244",{
+mongoose.connect("mongodb://mongo:Niv0xPCKhinvXoL9t95O@containers-us-west-118.railway.app:6167",{
     useNewUrlParser:true,
     useUnifiedTopology:true,
     family:4
-
 })
 .then(() => {
     app.use(express.json())
