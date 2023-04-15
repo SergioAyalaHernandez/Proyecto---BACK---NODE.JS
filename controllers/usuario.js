@@ -1,78 +1,84 @@
 var validator = require("validator");
-var Car = require("../models/Car");
+var Usuario = require("../models/Usuarios");
 
 var controller ={
+
     save:function(req,res){
         var params = req.body;
-        var validateName = !validator.isEmpty(params.name);
-        var validateBrand = !validator.isEmpty(params.brand);
-        var validateYear = !validator.isEmpty(params.year);
-        var validateDescription = !validator.isEmpty(params.description);
-        
-        if(validateName && validateDescription){
-            var car = new Car();
-            car.name = params.name;
-            car.brand = params.brand;
-            car.year = params.year;
-            car.description = params.description;
-            car.payDay = params.payDay;
-            car.link = params.link;
-            car.save((err,carStored)=>{
-                if(err || !carStored){
+        var validateName = !validator.isEmpty(params.nombre);
+        var validateSurname = !validator.isEmpty(params.surname);
+        var validateEmail = validator.isEmail(params.email)&& !validator.isEmpty(params.email);
+        var validatePass = !validator.isEmpty(params.pass);
+    
+        if(validateName && validateEmail && validatePass && validateSurname){
+            var usuario = new Usuario();
+            usuario.nombre = params.nombre;
+            usuario.surname = params.surname;
+            usuario.email = params.email;
+            usuario.pass = params.pass;
+            usuario.image = null;
+            usuario.role = "rol de usuario";
+            usuario.save((err,userStored)=>{
+                if(err || !userStored){
                     return res.status(404).send({
-                        message:"Error al guardar el carro",
+                        message:"Error al guardar el usuario",
                         status: "error"
                     });
                 }
                 return res.status(200).send({
-                    message:"Carro guardado"
+                    message:"Usuario guardado"
                 });
             });
+            console.log(usuario);
+          
         }else{
             return res.status(404).send({
                 message:"faltan parametros"
             });
         }
+       
+    },
+
+    login:function(req,res){
+        return res.status(200).send({
+            message:"Login"
+        });
     },
 
     update:function(req,res){
         var params = req.body;
-        var carId = req.params.id;
-        console.log(carId);
+        var usuarioId = req.params.id;
+        console.log(usuarioId);
         console.log(params);
-        console.log("params")
-        var validateName = !validator.isEmpty(params.name);
-        var validateBrand = !validator.isEmpty(params.brand);
-        var validateYear = !validator.isEmpty(params.year);
-        var validateDescription = !validator.isEmpty(params.description);
-        
-        if(validateName && validateBrand && validateDescription && validateYear){
+        var validateName = !validator.isEmpty(params.nombre);
+        var validateSurname = !validator.isEmpty(params.surname);
+        var validateEmail = validator.isEmail(params.email)&& !validator.isEmpty(params.email);
+        var validatePass = !validator.isEmpty(params.pass);
+        if(validateName && validateEmail && validatePass && validateSurname){
             var update = {
-                name:params.name,
-                brand:params.brand,
-                year:params.year,
-                description:params.description,
-                payDay:params.payDay,
-                link:params.link
+                nombre:params.nombre,
+                surname:params.surname,
+                email:params.email,
+                pass:params.pass
             }
             console.log(update)
-            Car.findOneAndUpdate({_id:carId},update,{new:true},(err,carUpdate)=>{
+            Usuario.findOneAndUpdate({_id:usuarioId},update,{new:true},(err,userUpdate)=>{
                 if(err){
                     return res.status(500).send({
                         message:"faltan parametros",
                         status:"error"
                         });
                 }
-                if(!carUpdate){
+                if(!userUpdate){
                     return res.status(400).send({
-                        message:"carro no actualizado",
+                        message:"usuario no actualizado",
                         status:"error"
                         });
                 }
                 return res.status(200).send({
-                    message:"Carro actualizado",
+                    message:"usuario actualizado",
                     status:"success",
-                    carUpdate
+                    userUpdate
                     });
             });          
             
@@ -86,8 +92,8 @@ var controller ={
     },
 
     eliminar:function(req,res){
-        var carId = req.params.id;
-        Car.findOneAndDelete({_id:carId},(err,carRemoved)=>{
+        var usuarioId = req.params.id;
+        Usuario.findOneAndDelete({_id:usuarioId},(err,userRemoved)=>{
             if(err){
                 return res.status(500).send({
                     message:"Error en la petición",
@@ -95,7 +101,7 @@ var controller ={
                 });
             }
 
-            if(!carRemoved){
+            if(!userRemoved){
                 return res.status(404).send({
                     message:"-usuario no eliminado",
                     status:"Error"
@@ -104,30 +110,26 @@ var controller ={
 
             return res.status(200).send({
                 message:"Eliminado exitosamente",
-                usuario:carRemoved
+                usuario:userRemoved
             });
         })
         
     },
 
 
-
-
-
-
-    listarCarros:function(req,res){
-        Car.find(function(err,doc){
+    listarUsuarios:function(req,res){
+        Usuario.find(function(err,doc){
             return res.status(200).send({
-                message:"Carros",
+                message:"Usuarios",
                 doc
             });        
         });
     },
-    mostrarCar:function(req,res){
+    mostrarUsuario:function(req,res){
         var params = req.body;
         var usuarioId = req.params.id;
         console.log(usuarioId);
-        Car.findById(usuarioId).exec((err,usuario)=>{
+        Usuario.findById(usuarioId).exec((err,usuario)=>{
             if(err){
                 return res.status(500).send({
                     message:"Error en el id",

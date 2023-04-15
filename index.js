@@ -1,30 +1,32 @@
-const express = require("express");// se debe instalar express
+const express = require("express");
 const app = express();
-const cors = require("cors");// importante para el consumo sin problemas de cors se instala cómo npm install cors
+const cors = require("cors");
 const mongoose = require("mongoose");
+const user_routes = require("./routes/usuario");
+const gama_routes = require("./routes/Gama");
+const reservation_routes = require("./routes/Reservation");
+const message_routes = require("./routes/Message");
 const car_routes = require("./routes/Car");
-const port = process.env.PORT ||3002; // se coloca cómo variable o puerto especifico para despliegue
-const bodyParser = require("body-parser"); // para manejo de JSON
+const port = process.env.PORT ||3002;
+const bodyParser = require("body-parser");
 
-mongoose.Promise = global.Promise; //se inicia la variable
+mongoose.Promise = global.Promise;
 
-//el proyecto usa express para el servidor
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
 
 
-mongoose.connect("mongodb://localhost:27017/grupo15",{
-    //acá va los datos de conexión de la base de datos
-    //se usa mongoose para la conexión y el crud
-    //se instala npm install mongoose
+mongoose.connect("mongodb://mongo:Niv0xPCKhinvXoL9t95O@containers-us-west-118.railway.app:6167",{
     useNewUrlParser:true,
     useUnifiedTopology:true,
     family:4
-})//si conecta bien la base, arranca el proyecto, si no, no...
+})
 .then(() => {
     app.use(express.json())
-    app.use("/api/car",car_routes); // se crea un proyecto de rutas, para el manejo de api(carpeta routes/Car.js)
+    app.use("/api/usuario",user_routes);
+    app.use("/api/car",car_routes);
+    app.use("/api/reservation",reservation_routes);
     app.listen(port, () =>{
         console.log("Init in the ", port);
     });
