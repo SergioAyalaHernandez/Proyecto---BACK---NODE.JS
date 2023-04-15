@@ -1,44 +1,47 @@
-var validator = require("validator");
-var Car = require("../models/Car");
+var validator = require("validator");//<-- libreria para validación de datos
+var Car = require("../models/Car"); //<--- se trae el modelo del objeto a guardar
 
-var controller ={
+
+var controller ={//<-- variable de control que se exporta y se consume en el Rutas(router)
+    
+    //Método para guardar el parametro
     save:function(req,res){
-        var params = req.body;
-        var validateName = !validator.isEmpty(params.name);
-        var validateBrand = !validator.isEmpty(params.brand);
-        var validateYear = !validator.isEmpty(params.year);
-        var validateDescription = !validator.isEmpty(params.description);
+        var params = req.body; //seteamos los valores de la respuesta en la variable params
+        var validateName = !validator.isEmpty(params.name);// valida si el parametro viene vació
+        var validateBrand = !validator.isEmpty(params.brand);// valida si el parametro viene vació
+        var validateYear = !validator.isEmpty(params.year);// valida si el parametro viene vació
+        var validateDescription = !validator.isEmpty(params.description);// valida si el parametro viene vació
         
-        if(validateName && validateDescription){
-            var car = new Car();
-            car.name = params.name;
-            car.brand = params.brand;
-            car.year = params.year;
-            car.description = params.description;
-            car.payDay = params.payDay;
-            car.link = params.link;
-            car.save((err,carStored)=>{
-                if(err || !carStored){
-                    return res.status(404).send({
-                        message:"Error al guardar el carro",
-                        status: "error"
+        if(validateName && validateDescription){// se valida si los valores que están vienen o no vacios
+            var car = new Car();// se crea un nuevo objeto car
+            car.name = params.name;//se setean valores en la variable car
+            car.brand = params.brand;//se setean valores en la variable car
+            car.year = params.year;//se setean valores en la variable car
+            car.description = params.description;//se setean valores en la variable car
+            car.payDay = params.payDay;//se setean valores en la variable car
+            car.link = params.link;//se setean valores en la variable car
+            car.save((err,carStored)=>{//método que usa mongosee para guardar el objeto en tabla
+                if(err || !carStored){//flujo de lógica
+                    return res.status(404).send({//setea el 404 en el status a devolver
+                        message:"Error al guardar el carro",//si faltan parametros no guarda
+                        status: "error"//envía este mensaje
                     });
                 }
-                return res.status(200).send({
+                return res.status(200).send({//guarda si está bien el objeto
                     message:"Carro guardado"
                 });
             });
         }else{
-            return res.status(404).send({
+            return res.status(404).send({// si faltan parametros, sale por este lado
                 message:"faltan parametros"
             });
         }
     },
-
+    //lo mismo de arriba, pero sobre escribe sobre el id que se le entregue en el path
     update:function(req,res){
         var params = req.body;
-        var carId = req.params.id;
-        console.log(carId);
+        var carId = req.params.id;// se envía cómo parametro el ID desde la consulta
+        console.log(carId);//logeamos el id a actualizar
         console.log(params);
         console.log("params")
         var validateName = !validator.isEmpty(params.name);
