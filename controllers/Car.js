@@ -3,6 +3,7 @@ var Car = require("../models/Car");
 
 var controller ={
     save:function(req,res){
+        console.log(req);
         var params = req.body;
         var validateName = !validator.isEmpty(params.name);
         var validateBrand = !validator.isEmpty(params.brand);
