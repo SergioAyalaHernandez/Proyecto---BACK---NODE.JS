@@ -10,6 +10,7 @@ const car_routes = require("./routes/Car");
 //const port = process.env.PORT ||443;
 const port = 443;
 const bodyParser = require("body-parser");
+require('text-encoding').TextEncoder;
 
 mongoose.Promise = global.Promise;
 
