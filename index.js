@@ -20,7 +20,7 @@ app.use(cors());
 
 
 //mongoose.connect("mongodb://mongo:Niv0xPCKhinvXoL9t95O@containers-us-west-118.railway.app:6167",{//conexión de mongo desplegada
-    mongoose.connect("mongodb://localhost:27017/grupo12",{
+    mongoose.connect("mongodb://mongo:27017/grupo12",{
     useNewUrlParser:true,
     useUnifiedTopology:true,
     family:4
