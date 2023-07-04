@@ -19,12 +19,11 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
 
 
-//mongoose.connect("mongodb://mongo:Niv0xPCKhinvXoL9t95O@containers-us-west-118.railway.app:6167",{//conexión de mongo desplegada
-    mongoose.connect("mongodb://mongo:27017/grupo12",{
-    useNewUrlParser:true,
-    useUnifiedTopology:true,
-    family:4
-})
+const mongoURL = 'mongodb://mongo:27017/mydatabase';
+
+mongoose.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(error => console.error('Error connecting to MongoDB:', error))
 .then(() => {
     app.use(express.json())
     app.use("/api/usuario",user_routes);
